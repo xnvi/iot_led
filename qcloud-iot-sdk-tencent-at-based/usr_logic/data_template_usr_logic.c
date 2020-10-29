@@ -159,9 +159,9 @@ static void deal_down_stream_user_logic(void *pClient, ProductDataDefine * pData
 {
 	// Log_d("someting about your own product logic wait to be done");
 
-	power_switch(pData->m_power_switch);
 	set_brightness(pData->m_brightness);
 	set_color_temp(pData->m_color_temp);
+	power_switch(pData->m_power_switch);
 	set_colorful_mode(pData->m_colorful_mode, pData->m_default_color_mode,
 	                  (pData->m_red << 16) + (pData->m_green << 8) + (pData->m_blue));
 }
