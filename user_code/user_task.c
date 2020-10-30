@@ -338,7 +338,7 @@ void main_screen(void)
 	{
 		power_sw_tmp = 0;
 	}
-	if(brightness_change)
+	if(brightness_change && brightness_value_tmp)
 	{
 		power_sw_tmp = 1;
 	}
