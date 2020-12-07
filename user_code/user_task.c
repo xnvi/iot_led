@@ -216,6 +216,9 @@ static uint8_t power_sw = 0; // 仅通过 power_switch() 设置
 static int32_t color_temp_value = 5500; // 仅通过set_color_temp() 设置
 static int32_t brightness_value = 0; // 仅通过 set_brightness() 设置
 
+// 屏幕控制相关
+static uint8_t oled_power_state = 1;
+static uint32_t oled_timer = 0;
 
 void menu_show_select_item(MenuNode *menu_p)
 {
@@ -388,6 +391,31 @@ void menu_task(void)
 {
 	uint8_t key = 0;
 	int8_t encoder = 0;
+
+	if(oled_power_state == 0)
+	{
+		// 息屏状态下任意操作唤醒屏幕
+		if(ReadEncoder() | ReadEncoderKey())
+		{
+			oled_power_state = 1;
+			OLED_Display_On();
+			oled_timer = 0;
+		}
+	}
+	else
+	{
+		// 一分钟左右熄灭
+		if(oled_timer > 900)
+		{
+			oled_power_state = 0;
+			OLED_Display_Off();
+		}
+		else
+		{
+			oled_timer += 1;
+		}
+	}
+	
 
 	if(menu_p == NULL)
 	{
